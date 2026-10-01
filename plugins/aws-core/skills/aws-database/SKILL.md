@@ -27,11 +27,23 @@ This skill works with or without the AWS MCP server. When available, the AWS MCP
 
 ## How this skill works
 
-1. **Find the sub-skill** — Match the user's request against the sub-skill registry below. Match on meaning, not exact wording. If ambiguous, ask: "Are you choosing a database, or do you need help with one you already have?" **This matching applies to every user message, not just the first.** If a subsequent message matches a different sub-skill's triggers (e.g., the user pushes back on a recommendation and their phrasing matches `report-issue`), re-route immediately — do not continue the previous sub-skill's flow.
+1. **Check task-specific handoffs first** — for an operational task in the table below, load that task skill before the broader engine skill. Keep service selection/comparison and reports of incorrect guidance in their existing sub-skills. Otherwise, **find the sub-skill** — Match the user's request against the sub-skill registry below. Match on meaning, not exact wording. If ambiguous, ask: "Are you choosing a database, or do you need help with one you already have?" **This matching applies to every user message, not just the first.** If a subsequent message matches a different sub-skill's triggers (e.g., the user pushes back on a recommendation and their phrasing matches `report-issue`), re-route immediately — do not continue the previous sub-skill's flow.
 
 2. **If a sub-skill matches** — read `references/{sub-skill-id}.md` and follow its procedure.
 
 3. **If no sub-skill matches** — answer from the knowledge cards in `assets/`. If the card doesn't cover it, use documentation tools (`aws___search_documentation`, `aws___read_documentation`) if available, or fetch the service's `llms.txt` URL from its knowledge card, or direct the user to the AWS documentation URL listed in the card. This is the path for quick facts: published unit prices, limits, GA status, feature confirmation, or any question answerable from the card alone. Do not load a service skill merely to answer a quick fact covered by the card. A workload-specific cost estimate is not a quick fact: when the user names a service and asks for an estimate based on throughput, storage, topology, or other workload inputs, route to `handoff` and load the available service skill. Offer deeper service-skill guidance only when it would be useful or the user asks for operational help.
+
+## Task-specific handoffs
+
+For these tasks, load the exact skill with `aws___retrieve_skill(skill_name="<skill>")` when AWS MCP is available, or read its already-installed `SKILL.md`. Use the same loading mechanism for the service skills in the Service reference table. A failed local load must fall back to AWS MCP; a listed skill is not necessarily bundled. If neither route is available, follow the documentation and installation-consent fallback in `references/handoff.md`. Loading guidance does not authorize resource changes.
+
+| Task | Skill | Scope boundary |
+|---|---|---|
+| Create a new Aurora MySQL or PostgreSQL cluster with attached instances and managed passwords | `creating-amazon-aurora-db-cluster-with-instances` | Prefer for this complete provisioning sequence; retain the engine skill for tuning, upgrades, and other engine-specific operations |
+| Export an RDS/Aurora snapshot to S3 as Parquet, including IAM, KMS, and export verification | `exporting-rds-to-s3` | Snapshot export for supported engines, not continuous replication or arbitrary SQL export |
+| Convert schemas or SQL between heterogeneous database engines using DMS Schema Conversion | `dms-schema-conversion` | Migration projects, compatibility assessment, converted DDL, and schema application; not general DMS replication tasks |
+| Assess or execute a Teradata-to-Redshift warehouse migration | `migrating-to-amazon-redshift` | Currently Teradata only; not general Redshift administration or unsupported source warehouses |
+| Enable or query Redshift SYS_* system-table publishing to Iceberg in S3 Tables | `querying-aws-redshift` | Historical/off-cluster monitoring and auditing; not querying customer tables or real-time in-cluster SYS_ views |
 
 ## Sub-skill registry
 

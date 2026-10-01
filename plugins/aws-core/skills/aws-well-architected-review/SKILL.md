@@ -22,6 +22,25 @@ Detailed procedures live in reference files — read each one when its step says
 - [Report template](assets/report-template.md) — the full report structure for the report step
 - [Security considerations](references/security-considerations.md) — secure handling of workload data, review tooling, findings, and persisted artifacts
 
+## Resilience implementation handoffs
+
+A Well-Architected review assesses and recommends; it does not authorize remediation or replace service-specific resilience procedures. For an explicit operational resilience request or a user-approved follow-up, load only the matching skill below. Do not run these workflows automatically during a review or substitute them for its required framework assessment.
+
+Use `aws___retrieve_skill(skill_name="<skill>")` with the exact name when AWS MCP is available, or read its already-installed `SKILL.md`. A failed local load must fall back to AWS MCP; these skills are not necessarily bundled. If neither route is available, disclose the limitation and consult official documentation. Loading guidance does not authorize resource changes, failover, or fault injection; follow the target skill's approval and safety gates.
+
+| User-requested follow-up | Skill |
+|---|---|
+| Design organization-wide resilience tiers, availability/RTO/RPO targets, DR approaches, and assessment/GameDay cadence | `resilience-program-design` |
+| Execute an end-to-end Define → Test → Operate lifecycle across Resilience Hub, FIS, and ARC | `aws-resilience-lifecycle` |
+| Set up Resilience Hub v2 policies, systems, user journeys, and a first assessment for a workload | `resilience-hub-getting-started` |
+| Run or interpret Resilience Hub v2 failure mode assessments, or remediate a specific finding | `resilience-hub-failure-mode-assessment` |
+| Configure Resilience Hub v2 per-service cross-account roles and centralized assessments | `resilience-hub-multi-account` |
+| Plan, author, or safely run FIS experiments with bounded blast radius and stop conditions | `aws-fault-injection-service` |
+| Configure ARC routing controls/safety rules or zonal shift/autoshift | `recovery-controller-setup` |
+| Design or troubleshoot ARC Region switch plans for recovery of an already multi-Region workload | `arc-region-switch` |
+
+A single-service request goes directly to its service skill; do not require the full resilience lifecycle or a full Well-Architected review first. Region switch orchestrates existing replicas; it does not establish replication.
+
 ## Execution model
 
 **Before beginning any step**, read and follow [security considerations](references/security-considerations.md) — secrets redaction, HTTPS-only retrieval, least privilege, and confidentiality handling must be loaded before you operate on workload code or review tooling.

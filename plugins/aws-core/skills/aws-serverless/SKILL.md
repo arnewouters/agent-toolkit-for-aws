@@ -15,6 +15,8 @@ Domain expertise for building serverless applications on AWS: Lambda, API Gatewa
 
 These cover capabilities and procedures the general references below do **not**. Several are specialized features or step-by-step tested procedures you would otherwise miss. Route to the matching skill before falling back to the references.
 
+Load the exact skill with `aws___retrieve_skill(skill_name="<skill>")` when AWS MCP is available, or read its already-installed `SKILL.md`. These skills are not necessarily bundled: a failed local load must fall back to AWS MCP, not to answering from this router. If neither route is available, disclose the limitation and consult official documentation. Loading guidance does not authorize resource changes.
+
 ### Advanced Lambda compute (easy to overlook)
 
 | Use this skill | When the workload involves |
@@ -50,6 +52,7 @@ Route here when the user is designing or operating an event-driven system rather
 
 | Use this skill | For the task |
 |---|---|
+| **enabling-lambda-vpc-internet-access** | Configure or restore internet egress for a VPC-attached Lambda using NAT gateways, subnet routes, and security groups; prefer this over general timeout troubleshooting when VPC internet access is the identified problem |
 | **connecting-lambda-to-api-gateway** | Wire an existing Lambda to a new REST/HTTP API: proxy integration, permissions, CORS, throttling, access logging, deployment |
 | **connecting-lambda-to-dynamodb** | Connect Lambda to DynamoDB: IAM execution role, read/write permissions, stream event source mapping |
 | **creating-api-gateway-stage** | Create an API Gateway stage with CloudWatch logging, X-Ray tracing, throttling, WAF association, and authorization |

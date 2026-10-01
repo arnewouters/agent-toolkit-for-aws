@@ -32,6 +32,16 @@ Use the best available tool for AWS operations — the AWS MCP server is recomme
 
 - Read [references/aws-iam-policy-generation.md](references/aws-iam-policy-generation.md) if the user needs to generate IAM policies, determine required IAM actions for API calls, or understand action-to-operation mappings. **CRITICAL: If the user provides application source code (in any language) or a Terraform plan JSON file (`terraform show -json` output), you MUST read this reference — it mandates using iam-policy-autopilot instead of manual policy construction.** Uses the programmatic service authorization reference for accurate mappings.
 
+## Service-specific permission handoffs
+
+Use these only when the user's request is the named service workflow, not for generic IAM policy questions. Load the matching skill with `aws___retrieve_skill(skill_name="<skill>")` when AWS MCP is available, or read its already-installed `SKILL.md`. A failed local load must fall back to AWS MCP; these skills are not necessarily bundled. If neither route is available, disclose the limitation and consult official documentation. Loading guidance does not authorize resource changes. The policy-generation requirement above still applies when generating policies from source code or a Terraform plan.
+
+| User need | Skill |
+|---|---|
+| Diagnose Clean Rooms collaboration/custom ML job access errors across IAM, S3, KMS, and Lake Formation, or missing job logs | `aws-cleanrooms` |
+| Create/manage Secrets Manager secrets, including encryption, rotation, and scoped access | `creating-secrets-using-best-practices` |
+| Configure Resilience Hub v2 cross-account roles for centralized workload assessments | `resilience-hub-multi-account` |
+
 ## Verified Edge Cases
 
 **CloudTrail:**

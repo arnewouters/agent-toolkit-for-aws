@@ -41,6 +41,19 @@ Best experience with the AWS MCP server; also works with the AWS CLI alone — n
 | Create, share, or retire (deprecate/disable/deregister) an AMI | [ami-management.md](references/ami-management.md) |
 | Fix something broken (can't connect, status-check fail, capacity error, stuck instances) | [troubleshooting.md](references/troubleshooting.md) |
 
+## Specialized follow-ups
+
+Load these only when the request matches the specific workflow; do not activate them for ordinary instance selection, fleet scaling, or SSH troubleshooting.
+
+| User need | Skill |
+|---|---|
+| Install/configure CloudWatch Network Flow Monitor agents on EC2, or diagnose agent 403 errors, missing metrics, and connectivity | `aws-network-monitoring` |
+| Modernize application source code for an x86-to-Graviton migration using AWS Transform | `aws-transform` |
+
+For Graviton instance selection and architecture compatibility advice, stay with `references/instance-selection.md`; route to Transform only when the user wants code transformation, not merely a different instance type.
+
+Use `aws___retrieve_skill(skill_name="<skill>")` with the exact name when AWS MCP is available, or read its already-installed `SKILL.md`. A failed local load must fall back to AWS MCP; these skills are not necessarily bundled. If neither route is available, disclose the limitation and consult official documentation. Loading guidance does not authorize agent installation, code changes, or infrastructure changes; follow the target workflow's consent requirements.
+
 ## Common Workflows
 
 **"Stand up an autoscaling web fleet"** → Create a launch template (AMI, type, IMDSv2), then an ASG referencing it with `--health-check-type ELB` and a target-tracking policy, see [auto-scaling.md](references/auto-scaling.md). For the public entry point, secure the load balancer (TLS/ACM, WAF, security response headers) per the Security Considerations below and the load-balancer notes in [auto-scaling.md](references/auto-scaling.md) — the load-balancer build itself belongs to `aws-networking`.
