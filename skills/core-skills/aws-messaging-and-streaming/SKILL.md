@@ -11,7 +11,7 @@ description: >-
   Routes the request to the specialized skill for that channel.
   Defers to the channel's specialized skill when the user already named a specific channel.
   In general, use specific skills or documentation searches for detailed service-specific questions.
-  Do NOT use for MSK or Managed Service for Apache Flink questions, prefer specific skills.
+  For MSK or Managed Service for Apache Flink questions, use this router only to load the matching specialized skill; do not implement from this skill.
   Does not configure customer communication channels; defers to specific skills.
 metadata:
   version: "4"
@@ -31,6 +31,18 @@ It also marks the boundary with **customer communication** — messages delivere
 Use this skill to decide which pattern fits a workload, select the right service, and understand how services integrate with each other.
 
 For specific guidance on individual AWS services, see reference files or service-specific Skills.
+
+## Specialized task handoffs — check before implementation
+
+For a matching task, load the exact skill below with `aws___retrieve_skill(skill_name="<skill>")` when AWS MCP is available, or read its already-installed `SKILL.md`. A failed local load must fall back to AWS MCP; these skills are not necessarily bundled. If neither route is available, disclose the limitation and consult official documentation. Do not treat this router's overview as a substitute for the specialized procedure. Loading guidance does not authorize resource changes.
+
+| Task | Skill | Scope boundary |
+|---|---|---|
+| Operate or size MSK Provisioned Standard/Express clusters, tune clients, diagnose lag, or configure Kafka-to-S3 delivery | `managing-amazon-msk` | Not general MSK Serverless, MSK Connect, or standalone Replicator operations |
+| Assess and migrate self-managed Kafka to MSK Express, including a trial cluster and migration replication | `migrate-to-msk` | Prefer over the operations skill for this migration; not MSK Standard-to-Express migration |
+| Configure or troubleshoot Kinesis Data Streams channels delivering to S3 buckets or Iceberg tables in S3 Tables | `managing-amazon-kinesis-data-streams` | Not Firehose, Video Streams, or general KDS administration |
+| Develop, deploy, upgrade, or troubleshoot Managed Service for Apache Flink applications | `developing-applications-on-managed-service-for-apache-flink` | Stateful processing, connectors, checkpoints, scaling, and KPU configuration; do not require Flink for simple direct KDS/MSK-to-S3 delivery |
+| Connect CloudWatch alarms to encrypted SNS topics and email/SMS/webhook subscriptions | `setting-up-cloudwatch-alarm-notifications` | Operational alarm notifications, not customer messaging campaigns or Omni alerts |
 
 ## Streaming and Messaging
 
@@ -121,7 +133,7 @@ The two groups are not interchangeable.
 
 Answer two kinds of question directly from this section: which group a workload belongs to, and which service owns a channel.
 For every other customer communication question — setting up a channel, sending through it, or troubleshooting delivery — do not answer from this skill: load the skill named in the table and answer from that.
-To load it, use `aws___retrieve_skill(skill_name="<skill>")` with the exact name from the table when the AWS MCP server is available, or read the skill document from the Agent Toolkit at `skills/<skill>/SKILL.md`.
+To load it, follow the inline loading procedure in **Specialized task handoffs** above, using the exact name from the channel table.
 Where the table says None, or the named skill cannot be loaded, say so, then answer using the documentation tools (`aws___search_documentation`, `aws___read_documentation`) if available, or the AWS documentation for the named service otherwise.
 
 ## Common Integration Gotchas

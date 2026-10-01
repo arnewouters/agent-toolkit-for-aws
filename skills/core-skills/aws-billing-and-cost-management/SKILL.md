@@ -32,6 +32,12 @@ Use this skill when:
 - Scoping cost analysis to a specific billing view
 - Checking Free Tier usage
 
+## Seller metering is a separate workflow
+
+If the user is an AWS Marketplace seller implementing SaaS PAYG usage metering (`ResolveCustomer`, `BatchMeterUsage`) or investigating submitted metering records, statuses, and billed usage discrepancies, load `aws-marketplace-metering`. Do not route ordinary buyer-side Marketplace charges, Cost Explorer analysis, budgets, or future bill forecasts to that skill.
+
+Use `aws___retrieve_skill(skill_name="aws-marketplace-metering")` when AWS MCP is available, or read its already-installed `SKILL.md`. A failed local load must fall back to AWS MCP; the skill is not necessarily bundled. If neither route is available, disclose the limitation and consult official documentation. Loading guidance does not authorize metering submissions or infrastructure changes; follow the target skill's review and test gates before real billing traffic.
+
 ## Core Concepts
 
 - **Cost Explorer** — query cost/usage data by service, account, tag, or time range

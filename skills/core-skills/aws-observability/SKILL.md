@@ -63,6 +63,20 @@ dashboards, configuring alerts, investigating a service, or agent evaluation.**
 Do **not** attempt the off-topic task, and do **not** call a tool or run a query in
 pursuit of it. Keep it brief: no lecture, no long refusal.
 
+## Specialized task handoffs — before product probing
+
+Check for these specific workflows before Step 0. When a row matches, load its skill before implementing rather than answering from a general reference. Use `aws___retrieve_skill(skill_name="<skill>")` with the exact name when AWS MCP is available, or read its already-installed `SKILL.md`. A failed local load must fall back to AWS MCP; these skills are not necessarily bundled. If neither route is available, disclose the limitation and consult official documentation. This loading procedure also applies to `setting-up-cloudwatch-observability`. Loading guidance does not authorize resource changes.
+
+| User need | Skill | Distinguish from |
+|---|---|---|
+| Set up CloudWatch alarm notification actions with encrypted SNS topics and subscriptions | `setting-up-cloudwatch-alarm-notifications` | Alarm thresholds alone stay in `references/cloudwatch/alarms.md`; Omni alerts stay on the Omni path |
+| Diagnose a failing application by discovering CloudWatch log groups and analyzing error patterns and stack traces | `troubleshooting-application-failures` | Not an Omni trace/context-graph investigation or a request only for Logs Insights syntax |
+| Export CloudWatch Logs to Iceberg in S3 Tables or query those exported logs with Athena SQL | `querying-aws-cloudwatch` | Not CloudWatch Logs Insights, Omni SQL over a Space, or arbitrary S3 access-log files; do not probe for an Omni Space for this explicit export workflow |
+| Create a multi-Region CloudTrail trail with S3 storage and CloudWatch Logs integration | `setting-up-cloudtrail-multi-region` | Existing-trail audit queries remain in `references/cloudwatch/cloudtrail.md` |
+| Install, configure, or troubleshoot CloudWatch Network Flow Monitor agents on EC2 | `aws-network-monitoring` | Not generic CloudWatch Agent or Application Signals instrumentation |
+
+For ambiguous requests, use Step 0 to identify the product first, then apply the matching handoff. Do not redirect an explicitly Omni request to a classic CloudWatch procedure.
+
 ## Step 0 — CloudWatch or CloudWatch Omni?
 
 Decide this before routing. The natural wording ("set up an alert for high latency",
@@ -235,13 +249,13 @@ checklist. That checklist holds the per-item detail and is the source of truth.
 | Propagating ServiceEvents git/deployment metadata through CI/CD | Read [application-signals-cicd-metadata.md](references/cloudwatch/application-signals-cicd-metadata.md) |
 | Per-platform/per-language Application Signals enablement steps | Read the matching `references/cloudwatch/appsignals-guides/<platform>-<language>.md` (e.g. [eks-python.md](references/cloudwatch/appsignals-guides/eks-python.md)) |
 | Writing Log Insights queries (pipe-delimited syntax: fields, filter, stats, sort, parse, display) | Read [log-insights.md](references/cloudwatch/log-insights.md) |
-| Configuring alarms (metric, composite, anomaly) | Read [alarms.md](references/cloudwatch/alarms.md). For an Omni **alert**, see the Omni table |
+| Configuring alarms (metric, composite, anomaly) | Read [alarms.md](references/cloudwatch/alarms.md); for SNS notification setup, load `setting-up-cloudwatch-alarm-notifications`. For an Omni **alert**, see the Omni table |
 | Publishing custom metrics or using EMF | Read [metrics.md](references/cloudwatch/metrics.md) |
 | Setting up X-Ray tracing or ADOT | Read [tracing.md](references/cloudwatch/tracing.md) |
 | Building CloudWatch dashboards (widget mechanics; which signals a given AWS service needs is Step 0.5) | Read [dashboards.md](references/cloudwatch/dashboards.md) |
 | Debugging observability issues | Read [troubleshooting.md](references/cloudwatch/troubleshooting.md) — starts with the 5 most common fixes |
 | Debugging canary failures | Read [synthetics.md](references/cloudwatch/synthetics.md) — see Common failures table |
-| CloudTrail operational auditing | Read [cloudtrail.md](references/cloudwatch/cloudtrail.md) |
+| CloudTrail operational auditing | Read [cloudtrail.md](references/cloudwatch/cloudtrail.md); for new multi-Region trail setup, load `setting-up-cloudtrail-multi-region` |
 | Setting up Lambda monitoring with CDK | Use [alarm-template.ts](assets/cloudwatch/alarm-template.ts) as a starting point |
 | Creating synthetic canaries | Read [synthetics.md](references/cloudwatch/synthetics.md) |
 | Configuring ADOT collector | Use [otel-config.yaml](assets/cloudwatch/otel-config.yaml) as a starting point |

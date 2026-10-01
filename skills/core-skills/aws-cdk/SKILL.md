@@ -13,6 +13,19 @@ Domain expertise for CDK construct authoring, deployment workflows, compliance, 
 
 **When NOT to use:** Raw CloudFormation YAML/JSON. SAM. Terraform/Pulumi. CI/CD beyond CDK Pipelines. Use builtin knowledge or specialized skills for these.
 
+## Task-specific guidance before construct authoring
+
+When CDK is the requested implementation language for one of these workflows, load the task skill first for its requirements, sequencing, and validation, then use this skill for CDK constructs and deployment safety. Do not execute a target skill's imperative CLI provisioning steps alongside a CDK deployment: translate applicable requirements into the requested IaC and preserve CloudFormation ownership. Pure CDK syntax, synth, diff, and deployment troubleshooting stay here.
+
+Use `aws___retrieve_skill(skill_name="<skill>")` with the exact name when AWS MCP is available, or read its already-installed `SKILL.md`. A failed local load must fall back to AWS MCP; these skills are not necessarily bundled. If neither route is available, disclose the limitation and consult official documentation. Loading guidance does not authorize deployment or resource changes.
+
+| Requested infrastructure task | Skill |
+|---|---|
+| Production multi-AZ VPC with public/private subnets, NAT, routes, and security groups | `creating-production-vpc-multi-az` |
+| Internet egress for VPC-attached Lambda | `enabling-lambda-vpc-internet-access` |
+| Create/manage Secrets Manager secrets with KMS, rotation, least privilege, and lifecycle controls | `creating-secrets-using-best-practices` |
+| Multi-Region CloudTrail trail with S3 and CloudWatch Logs destinations | `setting-up-cloudtrail-multi-region` |
+
 ## Critical Warnings
 
 **Deadly embrace**: Removing a cross-stack reference deadlocks deployment (`Export ... cannot be deleted as it is in use by ...`). Preferred fix: weaken the reference first — `CrossStackReferences.of($RESOURCE).produce(ReferenceStrength.BOTH)` then `WEAK`, then remove (three deploys). Legacy fallback: two-deploy `this.exportValue()` recipe. See [troubleshooting-deployment](references/troubleshooting-deployment.md).

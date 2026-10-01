@@ -158,6 +158,8 @@ When loaded through the AWS MCP server's retrieve_skill tool: the skill is not i
 
 ### Specialized skills
 
+For a matching task, load the specialized skill before implementing. Use `aws___retrieve_skill(skill_name="<skill>")` with the exact name when AWS MCP is available, or read its already-installed `SKILL.md`. A failed local load must fall back to AWS MCP; the linked skills are not necessarily bundled. If neither route is available, disclose the limitation and consult official documentation. Loading guidance does not authorize resource changes. These handoffs do not expand this skill into a general analytics or database guide.
+
 | Topic | Reference |
 | --- | --- |
 | Security on S3 | [`securing-s3-buckets`](https://github.com/aws/agent-toolkit-for-aws/tree/main/skills/specialized-skills/storage-skills/securing-s3-buckets) |
@@ -165,6 +167,10 @@ When loaded through the AWS MCP server's retrieve_skill tool: the skill is not i
 | Using S3 Vectors | [`storing-and-querying-vectors`](https://github.com/aws/agent-toolkit-for-aws/tree/main/skills/specialized-skills/storage-skills/storing-and-querying-vectors) |
 | Troubleshooting S3 Files | [`troubleshooting-s3-files`](https://github.com/aws/agent-toolkit-for-aws/tree/main/skills/specialized-skills/storage-skills/troubleshooting-s3-files) |
 | Troubleshooting EFS | [`troubleshooting-efs`](https://github.com/aws/agent-toolkit-for-aws/tree/main/skills/specialized-skills/storage-skills/troubleshooting-efs) |
+| Exporting supported RDS/Aurora snapshots to S3 as Parquet (not continuous replication) | `exporting-rds-to-s3` |
+| Exporting CloudWatch Logs to S3 Tables and querying the resulting Iceberg log tables with Athena (not arbitrary S3 log files or Omni SQL) | `querying-aws-cloudwatch` |
+| Publishing or querying historical Redshift SYS_* system tables in S3 Tables (not customer table data) | `querying-aws-redshift` |
+| SQL analytics on SageMaker Catalog asset metadata snapshots in S3 Tables: inventory, ownership, governance, and historical comparisons (not model selection, interactive catalog browsing, or querying asset contents) | `querying-aws-sagemaker-catalog` |
 | Querying S3 System Tables | [`querying-aws-s3`](https://github.com/aws/agent-toolkit-for-aws/tree/main/skills/specialized-skills/system-table-skills/querying-aws-s3) |
 | Ingesting data into a data lake | [`ingesting-into-data-lake`](https://github.com/aws/agent-toolkit-for-aws/tree/main/skills/specialized-skills/analytics-skills/ingesting-into-data-lake) |
 | Finding data lake assets | [`finding-data-lake-assets`](https://github.com/aws/agent-toolkit-for-aws/tree/main/skills/specialized-skills/analytics-skills/finding-data-lake-assets) |
